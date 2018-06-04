@@ -32,9 +32,9 @@ use ieee.std_logic_unsigned.all;
 --use UNISIM.VComponents.all;
 
 entity alu is
-    Port ( A : in  STD_LOGIC_VECTOR(15 downto 0);
-           B : in  STD_LOGIC_VECTOR(15 downto 0);
-           Op : in  STD_LOGIC_VECTOR(1 downto 0);
+    Port ( A_alu : in  STD_LOGIC_VECTOR(15 downto 0);
+           B_alu : in  STD_LOGIC_VECTOR(15 downto 0);
+           Ctrl_Alu : in  STD_LOGIC_VECTOR(7 downto 0);
            S : out  STD_LOGIC_VECTOR(15 downto 0);
            FlagC, FlagZ, FlagN, FlagO : out  STD_LOGIC
 			  );
@@ -49,19 +49,19 @@ architecture Behavioral of alu is
 
 begin
 
-	Rmul <=  A*B;
-	Radd <= ('0' & A) + ('0' & B);
+	Rmul <=  A_alu*B_alu;
+	Radd <= ('0' & A_alu) + ('0' & B_alu);
 	--Rdiv <= std_logic_vector((signed(A)/signed(B)));
-	R <= 	Radd(15 downto 0) when Op="00" else
-			A-B when Op="01" else
-			Rmul(15 downto 0) when Op="10"; --else
-			--Rdiv(15 downto 0) when Op="11";
+	R <= 	Radd(15 downto 0) when Ctrl_Alu=x"01" else
+			A_alu - B_alu when Ctrl_Alu=x"03" else
+			Rmul(15 downto 0) when Ctrl_Alu=x"02"; --else
+			--Rdiv(15 downto 0) when Ctrl_Alu=x"04";
 	--Radd <= ('0' & A) + ('0' & B);		
 	
 	FlagC <= Radd(16);
 	FlagZ <= '1' when R=x"0000" else '0';
 	FlagN <= '1' when R<0 else '0';
-	FlagO <= '1' when (Op="00" & not Radd(16)) else '0';
+	FlagO <= '1' when (Ctrl_Alu=x"01" & not Radd(16)) else '0';
 	S <= R;
 	
 

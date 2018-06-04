@@ -35,9 +35,9 @@ end testalu;
 architecture Behavioral of testalu is
 
 component alu 
-	    Port ( A : in  STD_LOGIC_VECTOR(15 downto 0);
-           B : in  STD_LOGIC_VECTOR(15 downto 0);
-           Op : in  STD_LOGIC_VECTOR(1 downto 0);
+	    Port ( A_alu : in  STD_LOGIC_VECTOR(15 downto 0);
+           B_alu : in  STD_LOGIC_VECTOR(15 downto 0);
+           Ctrl_Alu : in  STD_LOGIC_VECTOR(7 downto 0);
            S : out  STD_LOGIC_VECTOR(15 downto 0);
            FlagC, FlagZ, FlagN, FlagO : out  STD_LOGIC
 			  );
@@ -45,9 +45,9 @@ end component;
 
 --Inputs
 
-signal A : STD_LOGIC_VECTOR(15 downto 0) := "0000000000000000"; 
-signal B : STD_LOGIC_VECTOR(15 downto 0) := "0000000000000000";
-signal Op : STD_LOGIC_VECTOR(1 downto 0) := "00";
+signal A_alu : STD_LOGIC_VECTOR(15 downto 0) := "0000000000000000"; 
+signal B_alu : STD_LOGIC_VECTOR(15 downto 0) := "0000000000000000";
+signal Ctrl_Alu : STD_LOGIC_VECTOR(7 downto 0) := x"01";
 signal FlagC : STD_LOGIC;
 signal FlagZ : STD_LOGIC;
 signal FlagN : STD_LOGIC;
@@ -62,9 +62,9 @@ signal S : STD_LOGIC_VECTOR(15 downto 0);
 begin
 
 	uut: alu PORT MAP (
-		A => A,
-		B => B,
-		Op => Op,
+		A_alu => A_alu,
+		B_alu => B_alu,
+		Ctrl_Alu => Ctrl_Alu,
 		S => S,
 		FlagC => FlagC,
 		FlagZ => FlagZ,
@@ -74,9 +74,9 @@ begin
 	
 	stim_proc : process
 	begin
-		A <= "0000000000000001";--"1111111111111111";-- after 10 ns, "0000000011110000" after 30 ns;
-		B <= "0000000000000001";
-		Op <= "00";
+		A_alu<= "0000000000000001";--"1111111111111111";-- after 10 ns, "0000000011110000" after 30 ns;
+		B_alu <= "0000000000000001";
+		Ctrl_Alu <= x"01";
 		wait;
 	end process;
 

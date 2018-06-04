@@ -17,6 +17,9 @@
 %type <str> tVAR tID dec boolean
 %type <nb> tINT tIF tELSE tWHILE 
 
+%nonassoc tIFX
+%nonassoc tELSE
+
 %%
 
 Start : Start tMAIN tPO tVAR tID tPF tAO Body tAF { printf ("main");}
@@ -62,8 +65,8 @@ instruction : tID tEGAL Exp tPOINTVIRGULE
 			}
 			| tIF tPO boolean tPF 
 			{
-			add_mem_instr("CMP", getLast(), 1, 0);
-			add_mem_instr("JMPC", -1, 0, 0);
+			add_mem_instr("LOAD", 1 , getLast(),0);
+			add_mem_instr("JMPC", -1, 1, 0);
 			$1 = calcul_longueur() - 1;		
 			}
 			tAO Body tAF
@@ -71,7 +74,8 @@ instruction : tID tEGAL Exp tPOINTVIRGULE
 			int pos = $1;
 			change(pos, calcul_longueur() - 1);
 			}
-			| tELSE tAO Body tAF 
+			%prec tIFX
+			| tIF tPO boolean tPF tAO Body tAF tELSE tAO Body tAF
 			{
 			printf(" else \n");
 			}

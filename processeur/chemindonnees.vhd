@@ -32,6 +32,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity chemindonnees is
 	Port (
 		ins_di : in STD_LOGIC_VECTOR(31 downto 0);
+		data_a : out STD_LOGIC_VECTOR(15 downto 0);
+		data_we : out STD_LOGIC;
+		data_di : in STD_LOGIC_VECTOR(15 downto 0);
 		CLK : in STD_LOGIC
 	);
 end chemindonnees;
@@ -98,6 +101,7 @@ component lc
 end component;
 
 signal Res : STD_LOGIC;
+signal Res2 : STD_LOGIC;
 
 component mux 
 	Port (
@@ -110,6 +114,49 @@ component mux
 end component;
 
 signal B_out_m : STD_LOGIC_VECTOR(15 downto 0);
+
+component mux_alu 
+	Port (
+		Op2: in STD_LOGIC_VECTOR(7 downto 0);
+		B_in_m2 : in STD_LOGIC_VECTOR(15 downto 0);
+		B_out_m2 : out STD_LOGIC_VECTOR(15 downto 0);
+		adA2 : out STD_LOGIC_VECTOR(15 downto 0);
+		QA_m2 : in STD_LOGIC_VECTOR(15 downto 0)
+	);
+end component;
+
+signal A2 : STD_LOGIC_VECTOR(15 downto 0);
+signal B_out_m2 : STD_LOGIC_VECTOR(15 downto 0);
+
+component mux_mem is
+	Port (
+		Op3: in STD_LOGIC_VECTOR(7 downto 0);
+		B_in_m3 : in STD_LOGIC_VECTOR(15 downto 0);
+		data_out : out STD_LOGIC_VECTOR(15 downto 0);
+		data_in : in STD_LOGIC_VECTOR(15 downto 0)
+	);
+end component;
+
+signal data_out : STD_LOGIC_VECTOR(15 downto 0);
+
+component alu
+	Port ( A_alu : in  STD_LOGIC_VECTOR(15 downto 0);
+          B_alu : in  STD_LOGIC_VECTOR(15 downto 0);
+          Ctrl_Alu : in  STD_LOGIC_VECTOR(7 downto 0);
+          S : out  STD_LOGIC_VECTOR(15 downto 0);
+          FlagC, FlagZ, FlagN, FlagO : out  STD_LOGIC
+			);
+end component;
+--inputs alu
+signal FlagC : STD_LOGIC;
+signal FlagZ : STD_LOGIC;
+signal FlagN : STD_LOGIC;
+signal FlagO : STD_LOGIC;
+
+--Outputs alu
+signal S : STD_LOGIC_VECTOR(15 downto 0);
+
+
 
 type stage is record
 	Op : STD_LOGIC_VECTOR(7 downto 0);
@@ -145,7 +192,7 @@ begin
 		clk => clk,
 		A_in => li.a,
 		B_in => B_out_m,
-		C_in => li.c,
+		C_in => QB,
 		Op_in => li.Op,
 		A_out => di.a,
 		B_out => di.b,
@@ -156,7 +203,7 @@ begin
 	ex_mem : pipeline PORT MAP (
 		clk => clk,
 		A_in => di.a,
-		B_in => di.b,
+		B_in => B_out_m2,
 		C_in => di.c,
 		Op_in => di.Op,
 		A_out => ex.a,
@@ -184,9 +231,9 @@ begin
 	
 	bancreg : bancregistres PORT MAP (
 		adrA => adA,
-		adrB => adrB,
+		adrB => li.c(3 downto 0),
 		adrW => mem.a(3 downto 0),
-		DATA => mem.b,
+		DATA => data_out,
 		clk => clk,
 		RST => RST,
 		W => Res,
@@ -194,13 +241,47 @@ begin
 		QB => QB
 	);
 	
-	umux : mux PORT MAP (
+	umux1 : mux PORT MAP (
 		Op => li.Op,
 		B_in_m => li.b,
 		B_out_m => B_out_m,
 		adA => adA, 
 		QA_m => QA
 	);
+	
+	ualu: alu PORT MAP (
+		A_alu => A2,
+		B_alu => di.c,
+		Ctrl_Alu => di.Op,
+		S => S,
+		FlagC => FlagC,
+		FlagZ => FlagZ,
+		FlagN => FlagN,
+		FlagO => FlagO
+	);
+	
+	umux2 : mux_alu PORT MAP (
+		Op2 => di.Op,
+		B_in_m2 => di.b,
+		B_out_m2 => B_out_m2,
+		adA2 => A2, 
+		QA_m2 => S
+	);
+	
+	lc_mem : lc PORT MAP (
+		Op => ex.Op,
+		Res => Res2
+	);
+	
+	umux3 : mux_mem PORT MAP (
+		Op3 => mem.Op,
+		B_in_m3 => mem.b,
+		data_in => data_di, 
+		data_out => data_out
+	);
+	
+	data_a <= ex.b;
+	data_we <= Res2;
 	
 end Behavioral;
 
