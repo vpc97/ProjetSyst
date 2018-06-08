@@ -29,22 +29,22 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity mux is
+entity mux_str is
 	Port (
-		Op: in STD_LOGIC_VECTOR(7 downto 0);
-		B_in_m : in STD_LOGIC_VECTOR(15 downto 0);
-		B_out_m : out STD_LOGIC_VECTOR(15 downto 0);
-		adA : out STD_LOGIC_VECTOR(3 downto 0);
-		QA_m : in STD_LOGIC_VECTOR(15 downto 0)
+		Op4: in STD_LOGIC_VECTOR(7 downto 0);
+		A_in_s : in STD_LOGIC_VECTOR(15 downto 0);
+		s_out : out STD_LOGIC_VECTOR(15 downto 0);
+		B_in_s : in STD_LOGIC_VECTOR(15 downto 0)
 	);
-end mux;
+end mux_str;
 
-architecture Behavioral of mux is
+architecture Behavioral of mux_str is
 
 begin
 
-	adA <= B_in_m(3 downto 0);
-	B_out_m <= QA_m when Op = x"05" else B_in_m;
+	s_out <= A_in_s when Op4 = x"08" else B_in_s;
 
 end Behavioral;
+
+
 

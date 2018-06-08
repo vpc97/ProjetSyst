@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "mem_instr.h"
 
 Instr mem[1024];
 int i=0;
 int longueur = sizeof(mem)/sizeof(Instr);
+char num_instr;
 /*
 Instr Init_tableau(){
 	for(i=0; i<1024; i++){
@@ -59,7 +61,41 @@ void ecrire_fichier(){
 
 	for(i=0; i<(sizeof(mem)/sizeof(Instr)); i++){
 		if (mem[i].id != NULL){
-			fprintf(f, "%s %d %d %d\n",  mem[i].id, mem[i].param[0], mem[i].param[1], mem[i].param[2]);
+			if (strcmp(mem[i].id, "ADD") == 0) {
+				num_instr = '1';
+			} else if (strcmp(mem[i].id, "MUL") == 0) {
+				num_instr = '2';
+			} else if (strcmp(mem[i].id, "SOU") == 0) {
+				num_instr = '3';
+			} else if (strcmp(mem[i].id, "DIV") == 0) {
+				num_instr = '4';
+			} else if (strcmp(mem[i].id, "COP") == 0) {
+				num_instr = '5';
+			} else if (strcmp(mem[i].id, "AFC") == 0) {
+				num_instr = '6';
+			} else if (strcmp(mem[i].id, "LOAD") == 0) {
+				num_instr = '7';
+			} else if (strcmp(mem[i].id, "STORE") == 0) {
+				num_instr = '8';
+			} else if (strcmp(mem[i].id, "EQU") == 0) {
+				num_instr = '9';
+			} else if (strcmp(mem[i].id, "INF") == 0) {
+				num_instr = 'A';
+			} else if (strcmp(mem[i].id, "INFE") == 0) {
+				num_instr = 'B';
+			} else if (strcmp(mem[i].id, "SUP") == 0) {
+				num_instr = 'C';
+			} else if (strcmp(mem[i].id, "SUPE") == 0) {
+				num_instr = 'D';
+			} else if (strcmp(mem[i].id, "JMP") == 0) {
+				num_instr = 'E';
+			} else if (strcmp(mem[i].id, "JMPC") == 0) {
+				num_instr = 'F';
+			}
+
+			fprintf(f, "%c %d %d %d\n",  num_instr, mem[i].param[0], mem[i].param[1], mem[i].param[2]);
+
+			//fprintf(f, "%s %d %d %d\n",  mem[i].id, mem[i].param[0], mem[i].param[1], mem[i].param[2]);
 		}
 	}
 

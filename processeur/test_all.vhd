@@ -42,23 +42,15 @@ ARCHITECTURE behavior OF test_all IS
     COMPONENT chemindonnees
     PORT(
          ins_di : IN  std_logic_vector(31 downto 0);
-			data_a : out STD_LOGIC_VECTOR(15 downto 0);
-			data_we : out STD_LOGIC;
-			data_di : in STD_LOGIC_VECTOR(15 downto 0);
          CLK : IN  std_logic
         );
     END COMPONENT;
     
 
    --Inputs
-   signal ins_di : std_logic_vector(31 downto 0) := x"07010203";
+   signal ins_di : std_logic_vector(31 downto 0) := x"08010203";
    signal CLK : std_logic := '0';
-	signal data_di : STD_LOGIC_VECTOR(15 downto 0) := x"0101";
-	
-	--outputs
-	signal data_we : STD_LOGIC;	
-	signal data_a : STD_LOGIC_VECTOR(15 downto 0);
-	
+
    -- Clock period definitions
    constant CLK_period : time := 10 ns;
  
@@ -67,10 +59,7 @@ BEGIN
 	-- Instantiate the Unit Under Test (UUT)
    uut: chemindonnees PORT MAP (
           ins_di => ins_di,
-          CLK => CLK,
-			 data_di => data_di,
-			 data_we => data_we,
-			 data_a => data_a
+          CLK => CLK
         );
 
    -- Clock process definitions

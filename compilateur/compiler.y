@@ -2,6 +2,7 @@
   #include <stdlib.h>
   #include "table_symboles.h"
   #include "mem_instr.h"
+  #define YYDEBUG 0
 	int yylex(void);
 	void yyerror(char*);
 	char* type;
@@ -11,21 +12,20 @@
 
 %token tID tPO tPF tAO tAF tMAIN tCONST tSTRING tINT tVAR tIF tWHILE tFOR tELSE tRETURN tDO tPRINTF tSCANF tMULT tSOUSTRACTION tADDITION tDIV tGUILLEMET tCROCHETGAUCHE tCROCHETDROIT tPOINTVIRGULE tVIRGULE tEGAL tDEGAL tDIF tPOINTEXCLAMATION tPOINTINTERROGATION tINF tSUP tINFEGAL tSUPEGAL tPLUSPLUS tMOINSMOINS
 
+%left tDEGAL tDIF
+%left tINF tINFEGAL tSUPEGAL tSUP
 %left tADDITION tSOUSTRACTION
 %left tMULT tDIV
 
 %type <str> tVAR tID dec boolean
-%type <nb> tINT tIF tELSE tWHILE 
+%type <nb> tINT tIF tELSE tWHILE if_action
 
 %nonassoc tIFX
 %nonassoc tELSE
 
 %%
 
-Start : Start tMAIN tPO tVAR tID tPF tAO Body tAF { printf ("main");}
-		| Start tMAIN tPO tVAR tID tPF tAO tAF
-		| Start tMAIN tPO tPF tAO Body tAF
-		| tVAR
+Start : tVAR tMAIN tPO tPF tAO Body tAF { printf ("main");}
 		;
 Body : 	declarations instructions 
 		| declarations
@@ -63,19 +63,13 @@ instruction : tID tEGAL Exp tPOINTVIRGULE
 			{
 			add_mem_instr("PRI", getAdresse($3), 0, 0);
 			}
-			| tIF tPO boolean tPF 
+			| tIF tPO boolean tPF if_action tAO Body tAF %prec tIFX
 			{
-			add_mem_instr("LOAD", 1 , getLast(),0);
-			add_mem_instr("JMPC", -1, 1, 0);
-			$1 = calcul_longueur() - 1;		
-			}
-			tAO Body tAF
-			{
-			int pos = $1;
+			int pos = $5;
 			change(pos, calcul_longueur() - 1);
 			}
-			%prec tIFX
-			| tIF tPO boolean tPF tAO Body tAF tELSE tAO Body tAF
+			
+			| tIF tPO boolean tPF if_action tAO Body tAF tELSE tAO Body tAF
 			{
 			printf(" else \n");
 			}
@@ -91,14 +85,21 @@ instruction : tID tEGAL Exp tPOINTVIRGULE
 			{
 			printf("for\n");	
 			};
-boolean :	boolean tEGAL boolean 
+
+if_action : {
+			add_mem_instr("LOAD", 1 , getLast(),0);
+			add_mem_instr("JMPC", -1, 1, 0);
+			$$ = calcul_longueur() - 1;		
+			};
+
+boolean :	/*boolean tEGAL boolean 
 			{ 
 				add_mem_instr("LOAD", 0, getLast(), 0);
 				supprimer(); 
 				add_mem_instr("STORE", getAdresse($1), 0, 0);
 				supprimer();
 			}			
-			| boolean tDEGAL boolean 
+			|*/ boolean tDEGAL boolean 
 			{
 			add_mem_instr("LOAD", 0, getLast(), 0);
 			supprimer();
@@ -116,7 +117,7 @@ boolean :	boolean tEGAL boolean
 			add_mem_instr("STORE", getLast(), 0, 0);
 			supprimer();
 			}
-			| boolean tEGAL Exp
+			/*| boolean tEGAL Exp
 			{ 
 				add_mem_instr("LOAD", 0, getLast(), 0);
 				supprimer(); 
@@ -140,7 +141,7 @@ boolean :	boolean tEGAL boolean
 			add_mem_instr("EQ", 0, 0, 1);
 			add_mem_instr("STORE", getLast(), 0, 0);
 			supprimer();
-			}
+			}*/
 			| boolean tINF boolean 
 			{
 			add_mem_instr("LOAD", 0, getLast(), 0);
@@ -237,10 +238,13 @@ Exp: 	Exp tADDITION Exp
 		} 
 		| tPO Exp tPF
 		;
-
+ 
 %%
 
 int main(){
+	#if YYDEBUG
+		yydebug = 1;
+	#endif	
 	yyparse();
 	ecrire_fichier();
 }

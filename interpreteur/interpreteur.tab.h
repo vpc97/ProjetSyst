@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_COMPILER_TAB_H_INCLUDED
-# define YY_YY_COMPILER_TAB_H_INCLUDED
+#ifndef YY_YY_INTERPRETEUR_TAB_H_INCLUDED
+# define YY_YY_INTERPRETEUR_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -45,60 +45,28 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    tID = 258,
-    tPO = 259,
-    tPF = 260,
-    tAO = 261,
-    tAF = 262,
-    tMAIN = 263,
-    tCONST = 264,
-    tSTRING = 265,
-    tINT = 266,
-    tVAR = 267,
-    tIF = 268,
-    tWHILE = 269,
-    tFOR = 270,
-    tELSE = 271,
-    tRETURN = 272,
-    tDO = 273,
-    tPRINTF = 274,
-    tSCANF = 275,
-    tMULT = 276,
-    tSOUSTRACTION = 277,
-    tADDITION = 278,
-    tDIV = 279,
-    tGUILLEMET = 280,
-    tCROCHETGAUCHE = 281,
-    tCROCHETDROIT = 282,
-    tPOINTVIRGULE = 283,
-    tVIRGULE = 284,
-    tEGAL = 285,
-    tDEGAL = 286,
-    tDIF = 287,
-    tPOINTEXCLAMATION = 288,
-    tPOINTINTERROGATION = 289,
-    tINF = 290,
-    tSUP = 291,
-    tINFEGAL = 292,
-    tSUPEGAL = 293,
-    tPLUSPLUS = 294,
-    tMOINSMOINS = 295,
-    tIFX = 296
+    tADD = 258,
+    tMUL = 259,
+    tSOU = 260,
+    tDIV = 261,
+    tCOP = 262,
+    tAFC = 263,
+    tJMP = 264,
+    tJMPC = 265,
+    tINF = 266,
+    tSUP = 267,
+    tEQU = 268,
+    tLOAD = 269,
+    tSTORE = 270,
+    tINFE = 271,
+    tSUPE = 272,
+    tENT = 273
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-
-union YYSTYPE
-{
-#line 11 "compiler.y" /* yacc.c:1909  */
- char* str; int nb;
-
-#line 99 "compiler.tab.h" /* yacc.c:1909  */
-};
-
-typedef union YYSTYPE YYSTYPE;
+typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -108,4 +76,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_COMPILER_TAB_H_INCLUDED  */
+#endif /* !YY_YY_INTERPRETEUR_TAB_H_INCLUDED  */

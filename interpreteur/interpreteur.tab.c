@@ -62,17 +62,61 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "compiler.y" /* yacc.c:339  */
-#include <stdio.h>
-  #include <stdlib.h>
-  #include "table_symboles.h"
-  #include "mem_instr.h"
-  #define YYDEBUG 0
-	int yylex(void);
-	void yyerror(char*);
-	char* type;
+#line 1 "interpreteur.y" /* yacc.c:339  */
 
-#line 76 "compiler.tab.c" /* yacc.c:339  */
+  #include <stdio.h>
+
+  #ifdef DEBUG
+    #define DEBUG_YACC(list...) \
+      printf(list);
+  #else
+    #define DEBUG_YACC(list...)
+  #endif
+
+
+  #define TRAITER_INSTRUCTION(A, B, C, D) \
+    {                                     \
+      printf("\"");                       \
+      print_binaire(A, 8);                \
+      printf("\" & \"");                 \
+      print_binaire(B, 8);                \
+      printf("\" & \"");                 \
+      print_binaire(C, 8);                \
+      printf("\" & \"");                 \
+      print_binaire(D, 8);                \
+      printf("\",\n ");                   \
+    } while (0);
+
+  void print_binaire(int nombre, int taille) {
+    int mask = 1 << (taille - 1);
+    while (mask) {
+      if ((nombre & mask) == 0) {
+        printf("0");
+      } else {
+        printf("1");
+      }
+      mask = mask >> 1;
+    }
+  }
+
+  #define DEST_ADD   0x1
+  #define DEST_MUL   0x2
+  #define DEST_SOU   0x3
+  #define DEST_DIV   0x4
+  #define DEST_COP   0x5
+  #define DEST_AFC   0x6
+  #define DEST_LOAD   0x7
+  #define DEST_STORE   0x8
+  #define DEST_EQU   0x9
+  #define DEST_INF   0xA
+  #define DEST_INFE   0xB
+  #define DEST_SUP   0xC
+  #define DEST_SUPE  0xD
+  #define DEST_JMP 0xE
+  #define DEST_JMPC 0xF
+
+
+#line 120 "interpreteur.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -91,9 +135,9 @@
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "compiler.tab.h".  */
-#ifndef YY_YY_COMPILER_TAB_H_INCLUDED
-# define YY_YY_COMPILER_TAB_H_INCLUDED
+   by #include "interpreteur.tab.h".  */
+#ifndef YY_YY_INTERPRETEUR_TAB_H_INCLUDED
+# define YY_YY_INTERPRETEUR_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -107,60 +151,28 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    tID = 258,
-    tPO = 259,
-    tPF = 260,
-    tAO = 261,
-    tAF = 262,
-    tMAIN = 263,
-    tCONST = 264,
-    tSTRING = 265,
-    tINT = 266,
-    tVAR = 267,
-    tIF = 268,
-    tWHILE = 269,
-    tFOR = 270,
-    tELSE = 271,
-    tRETURN = 272,
-    tDO = 273,
-    tPRINTF = 274,
-    tSCANF = 275,
-    tMULT = 276,
-    tSOUSTRACTION = 277,
-    tADDITION = 278,
-    tDIV = 279,
-    tGUILLEMET = 280,
-    tCROCHETGAUCHE = 281,
-    tCROCHETDROIT = 282,
-    tPOINTVIRGULE = 283,
-    tVIRGULE = 284,
-    tEGAL = 285,
-    tDEGAL = 286,
-    tDIF = 287,
-    tPOINTEXCLAMATION = 288,
-    tPOINTINTERROGATION = 289,
-    tINF = 290,
-    tSUP = 291,
-    tINFEGAL = 292,
-    tSUPEGAL = 293,
-    tPLUSPLUS = 294,
-    tMOINSMOINS = 295,
-    tIFX = 296
+    tADD = 258,
+    tMUL = 259,
+    tSOU = 260,
+    tDIV = 261,
+    tCOP = 262,
+    tAFC = 263,
+    tJMP = 264,
+    tJMPC = 265,
+    tINF = 266,
+    tSUP = 267,
+    tEQU = 268,
+    tLOAD = 269,
+    tSTORE = 270,
+    tINFE = 271,
+    tSUPE = 272,
+    tENT = 273
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-
-union YYSTYPE
-{
-#line 11 "compiler.y" /* yacc.c:355  */
- char* str; int nb;
-
-#line 161 "compiler.tab.c" /* yacc.c:355  */
-};
-
-typedef union YYSTYPE YYSTYPE;
+typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -170,11 +182,11 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_COMPILER_TAB_H_INCLUDED  */
+#endif /* !YY_YY_INTERPRETEUR_TAB_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 178 "compiler.tab.c" /* yacc.c:358  */
+#line 190 "interpreteur.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -414,23 +426,23 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  4
+#define YYFINAL  48
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   129
+#define YYLAST   62
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  42
+#define YYNTOKENS  19
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  12
+#define YYNNTS  18
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  39
+#define YYNRULES  33
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  104
+#define YYNSTATES  80
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   296
+#define YYMAXUTOK   273
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -466,19 +478,17 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41
+      15,    16,    17,    18
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    28,    28,    30,    31,    32,    33,    35,    36,    38,
-      39,    40,    43,    49,    50,    53,    54,    56,    62,    66,
-      72,    76,    80,    84,    89,   102,   111,   145,   154,   163,
-     172,   181,   187,   195,   203,   211,   219,   227,   233,   239
+       0,    59,    59,    59,    62,    63,    64,    65,    66,    67,
+      68,    69,    70,    71,    72,    73,    74,    75,    76,    79,
+      86,    93,   100,   107,   112,   117,   121,   126,   133,   140,
+     147,   154,   161,   165
 };
 #endif
 
@@ -487,15 +497,14 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "tID", "tPO", "tPF", "tAO", "tAF",
-  "tMAIN", "tCONST", "tSTRING", "tINT", "tVAR", "tIF", "tWHILE", "tFOR",
-  "tELSE", "tRETURN", "tDO", "tPRINTF", "tSCANF", "tMULT", "tSOUSTRACTION",
-  "tADDITION", "tDIV", "tGUILLEMET", "tCROCHETGAUCHE", "tCROCHETDROIT",
-  "tPOINTVIRGULE", "tVIRGULE", "tEGAL", "tDEGAL", "tDIF",
-  "tPOINTEXCLAMATION", "tPOINTINTERROGATION", "tINF", "tSUP", "tINFEGAL",
-  "tSUPEGAL", "tPLUSPLUS", "tMOINSMOINS", "tIFX", "$accept", "Start",
-  "Body", "declarations", "declaration", "decl_type", "dec",
-  "instructions", "instruction", "if_action", "boolean", "Exp", YY_NULLPTR
+  "$end", "error", "$undefined", "tADD", "tMUL", "tSOU", "tDIV", "tCOP",
+  "tAFC", "tJMP", "tJMPC", "tINF", "tSUP", "tEQU", "tLOAD", "tSTORE",
+  "tINFE", "tSUPE", "tENT", "$accept", "instructions", "instruction",
+  "instruction_add", "instruction_mul", "instruction_sou",
+  "instruction_div", "instruction_cop", "instruction_afc",
+  "instruction_jmp", "instruction_jmpc", "instruction_inf",
+  "instruction_infe", "instruction_sup", "instruction_supe",
+  "instruction_equ", "instruction_load", "instruction_store", YY_NULLPTR
 };
 #endif
 
@@ -505,17 +514,14 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
-     285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
-     295,   296
+     265,   266,   267,   268,   269,   270,   271,   272,   273
 };
 # endif
 
-#define YYPACT_NINF -74
+#define YYPACT_NINF -4
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-74)))
+  (!!((Yystate) == (-4)))
 
 #define YYTABLE_NINF -1
 
@@ -526,17 +532,14 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -8,     5,    27,    46,   -74,    19,    75,    42,    57,   -74,
-      84,    85,    91,    92,    90,    55,    86,    96,   -74,    55,
-      33,    12,    12,    97,    98,   -74,   -74,   -74,    43,   -74,
-     -74,    33,   -74,    54,   -74,   -74,     3,    11,    72,    99,
-     -74,   100,    33,    -2,    33,    33,    33,    33,   -74,   -74,
-      12,    12,    12,    12,    12,    12,   101,    94,    78,    24,
-     -74,    62,   -74,   -74,    -7,    -7,   -74,   102,    56,    56,
-     -74,   -74,   -74,   -74,    42,    81,   -74,   -74,   100,   -74,
-      42,   103,    12,   -74,   104,   -74,   -26,   105,   109,   107,
-      40,    42,   110,   111,   112,   108,   114,   -74,    42,    42,
-     115,   116,   -74,   -74
+      -3,    -2,    -1,     0,     1,     2,     3,     4,     5,     6,
+       7,     8,     9,    10,    11,    12,    15,    -3,    -4,    -4,
+      -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,
+      -4,    -4,    -4,    13,    14,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,    25,    26,    27,    28,    -4,    -4,
+      29,    30,    31,    32,    33,    34,    35,    36,    37,    38,
+      39,    40,    41,    42,    43,    -4,    -4,    -4,    -4,    -4,
+      -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -544,31 +547,28 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,     0,     1,     0,     0,     6,     0,    12,
-       0,     0,     0,     0,     0,     4,     8,     0,     5,    16,
-       0,     0,     0,     0,     0,     2,     3,     7,     0,    15,
-      38,     0,    37,     0,    32,    31,     0,     0,     0,     0,
-       9,     0,     0,     0,     0,     0,     0,     0,    17,    24,
+       3,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     3,     4,     5,
+       6,     7,     8,     9,    10,    11,    12,    15,    13,    16,
+      14,    17,    18,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     1,     2,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-      10,     0,    39,    36,    34,    33,    35,     0,    25,    26,
-      27,    28,    29,    30,     6,     0,    18,    13,     0,    11,
-       6,     0,     0,    14,     0,    21,     0,    19,     0,     0,
-       0,     6,     0,     0,     0,     0,     0,    20,     6,     6,
-       0,     0,    22,    23
+       0,     0,     0,     0,     0,    19,    20,    21,    22,    23,
+      24,    25,    26,    27,    29,    31,    32,    33,    28,    30
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -74,   -74,   -73,   113,   -74,   -74,    39,    44,   -74,   -74,
-     -22,    20
+      -4,    45,    -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4,
+      -4,    -4,    -4,    -4,    -4,    -4,    -4,    -4
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,    14,    15,    16,    17,    60,    18,    19,    67,
-      36,    33
+      -1,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    31,    32
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -576,71 +576,56 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      37,    81,    88,    62,     1,    50,    51,    84,    49,    52,
-      53,    54,    55,     3,    44,    34,    56,    47,    94,    44,
-      45,    46,    47,    35,     6,   100,   101,     4,    68,    69,
-      70,    71,    72,    73,    50,    51,    30,    31,    52,    53,
-      54,    55,    50,    51,    32,     8,    52,    53,    54,    55,
-       5,    43,    77,    78,     9,    10,    11,    12,     8,    26,
-      86,    13,    61,    29,    63,    64,    65,    66,    10,    11,
-      12,    40,    41,    42,    13,    44,    45,    46,    47,    92,
-      93,     7,    48,    44,    45,    46,    47,    20,    21,    22,
-      79,    52,    53,    54,    55,    23,    24,    25,     9,    28,
-      38,    39,    57,    59,    58,    75,    76,    74,    80,    82,
-      85,    87,    90,    91,    98,    95,    96,    83,     0,    97,
-      99,    89,   102,   103,     0,     0,     0,     0,     0,    27
+       1,     2,     3,     4,     5,     6,     7,     8,     9,    10,
+      11,    12,    13,    14,    15,    48,    33,    34,    35,    36,
+      37,    38,    39,    40,    41,    42,    43,    44,    45,    46,
+      47,    50,    51,     0,    52,    53,    54,    55,    56,    57,
+      58,    59,    60,    61,    62,    63,    64,    65,    66,    67,
+      68,    69,    70,    71,    72,    73,    74,    75,    76,    77,
+      78,    79,    49
 };
 
 static const yytype_int8 yycheck[] =
 {
-      22,    74,    28,     5,    12,    31,    32,    80,     5,    35,
-      36,    37,    38,     8,    21,     3,     5,    24,    91,    21,
-      22,    23,    24,    11,     5,    98,    99,     0,    50,    51,
-      52,    53,    54,    55,    31,    32,     3,     4,    35,    36,
-      37,    38,    31,    32,    11,     3,    35,    36,    37,    38,
-       4,    31,    28,    29,    12,    13,    14,    15,     3,    15,
-      82,    19,    42,    19,    44,    45,    46,    47,    13,    14,
-      15,    28,    29,    30,    19,    21,    22,    23,    24,    39,
-      40,     6,    28,    21,    22,    23,    24,    30,     4,     4,
-      28,    35,    36,    37,    38,     4,     4,     7,    12,     3,
-       3,     3,    30,     3,     5,    11,    28,     6,     6,    28,
-       7,     7,     3,     6,     6,     5,     5,    78,    -1,     7,
-       6,    16,     7,     7,    -1,    -1,    -1,    -1,    -1,    16
+       3,     4,     5,     6,     7,     8,     9,    10,    11,    12,
+      13,    14,    15,    16,    17,     0,    18,    18,    18,    18,
+      18,    18,    18,    18,    18,    18,    18,    18,    18,    18,
+      18,    18,    18,    -1,    18,    18,    18,    18,    18,    18,
+      18,    18,    18,    18,    18,    18,    18,    18,    18,    18,
+      18,    18,    18,    18,    18,    18,    18,    18,    18,    18,
+      18,    18,    17
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    12,    43,     8,     0,     4,     5,     6,     3,    12,
-      13,    14,    15,    19,    44,    45,    46,    47,    49,    50,
-      30,     4,     4,     4,     4,     7,    49,    45,     3,    49,
-       3,     4,    11,    53,     3,    11,    52,    52,     3,     3,
-      28,    29,    30,    53,    21,    22,    23,    24,    28,     5,
-      31,    32,    35,    36,    37,    38,     5,    30,     5,     3,
-      48,    53,     5,    53,    53,    53,    53,    51,    52,    52,
-      52,    52,    52,    52,     6,    11,    28,    28,    29,    28,
-       6,    44,    28,    48,    44,     7,    52,     7,    28,    16,
-       3,     6,    39,    40,    44,     5,     5,     7,     6,     6,
-      44,    44,     7,     7
+       0,     3,     4,     5,     6,     7,     8,     9,    10,    11,
+      12,    13,    14,    15,    16,    17,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
+      34,    35,    36,    18,    18,    18,    18,    18,    18,    18,
+      18,    18,    18,    18,    18,    18,    18,    18,     0,    20,
+      18,    18,    18,    18,    18,    18,    18,    18,    18,    18,
+      18,    18,    18,    18,    18,    18,    18,    18,    18,    18,
+      18,    18,    18,    18,    18,    18,    18,    18,    18,    18
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    42,    43,    44,    44,    44,    44,    45,    45,    46,
-      46,    46,    47,    48,    48,    49,    49,    50,    50,    50,
-      50,    50,    50,    50,    51,    52,    52,    52,    52,    52,
-      52,    52,    52,    53,    53,    53,    53,    53,    53,    53
+       0,    19,    20,    20,    21,    21,    21,    21,    21,    21,
+      21,    21,    21,    21,    21,    21,    21,    21,    21,    22,
+      23,    24,    25,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    35,    36
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     7,     2,     1,     1,     0,     2,     1,     3,
-       4,     5,     1,     2,     3,     2,     1,     4,     5,     8,
-      12,     7,    14,    14,     0,     3,     3,     3,     3,     3,
-       3,     1,     1,     3,     3,     3,     3,     1,     1,     3
+       0,     2,     2,     0,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     4,
+       4,     4,     4,     4,     4,     4,     4,     4,     4,     4,
+       4,     4,     4,     4
 };
 
 
@@ -1316,287 +1301,158 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 2:
-#line 28 "compiler.y" /* yacc.c:1646  */
-    { printf ("main");}
-#line 1323 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 9:
-#line 38 "compiler.y" /* yacc.c:1646  */
-    { inserer((yyvsp[-1].str),type); }
-#line 1329 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 39 "compiler.y" /* yacc.c:1646  */
-    { inserer((yyvsp[-2].str),type);}
-#line 1335 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 11:
-#line 40 "compiler.y" /* yacc.c:1646  */
-    { inserer((yyvsp[-3].str),type); }
-#line 1341 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 12:
-#line 44 "compiler.y" /* yacc.c:1646  */
+        case 19:
+#line 79 "interpreteur.y" /* yacc.c:1646  */
     {
-		type = (yyvsp[0].str);
-	}
-#line 1349 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 49 "compiler.y" /* yacc.c:1646  */
-    { inserer((yyvsp[-1].str),type); }
-#line 1355 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 14:
-#line 50 "compiler.y" /* yacc.c:1646  */
-    { inserer((yyvsp[-2].str),type); }
-#line 1361 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 17:
-#line 57 "compiler.y" /* yacc.c:1646  */
-    { 
-				add_mem_instr("LOAD" , 0 , getLast(), 0);
-				supprimer(); 
-				add_mem_instr("STORE", getAdresse((yyvsp[-3].str)), 0, 0);
-			}
-#line 1371 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 18:
-#line 63 "compiler.y" /* yacc.c:1646  */
-    {
-			add_mem_instr("PRI", getAdresse((yyvsp[-2].str)), 0, 0);
-			}
-#line 1379 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 19:
-#line 67 "compiler.y" /* yacc.c:1646  */
-    {
-			int pos = (yyvsp[-3].nb);
-			change(pos, calcul_longueur() - 1);
-			}
-#line 1388 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-1]), 2, 0);
+                    TRAITER_INSTRUCTION(DEST_ADD,    2, 1, 1);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1313 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 73 "compiler.y" /* yacc.c:1646  */
+#line 86 "interpreteur.y" /* yacc.c:1646  */
     {
-			printf(" else \n");
-			}
-#line 1396 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-1]), 2, 0);
+                    TRAITER_INSTRUCTION(DEST_MUL,    2, 1, 1);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1324 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 77 "compiler.y" /* yacc.c:1646  */
+#line 93 "interpreteur.y" /* yacc.c:1646  */
     {
-			printf("while\n");
-			}
-#line 1404 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-1]), 2, 0);
+                    TRAITER_INSTRUCTION(DEST_SOU,    2, 1, 1);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1335 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 81 "compiler.y" /* yacc.c:1646  */
+#line 100 "interpreteur.y" /* yacc.c:1646  */
     {
-			printf("for\n");
-			}
-#line 1412 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-1]), 2, 0);
+                    TRAITER_INSTRUCTION(DEST_DIV,    2, 1, 1);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1346 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 85 "compiler.y" /* yacc.c:1646  */
+#line 107 "interpreteur.y" /* yacc.c:1646  */
     {
-			printf("for\n");	
-			}
-#line 1420 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-1]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1355 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 89 "compiler.y" /* yacc.c:1646  */
+#line 112 "interpreteur.y" /* yacc.c:1646  */
     {
-			add_mem_instr("LOAD", 1 , getLast(),0);
-			add_mem_instr("JMPC", -1, 1, 0);
-			(yyval.nb) = calcul_longueur() - 1;		
-			}
-#line 1430 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_AFC,   (yyvsp[-2]), (yyvsp[-1]), 0);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1364 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 103 "compiler.y" /* yacc.c:1646  */
+#line 117 "interpreteur.y" /* yacc.c:1646  */
     {
-			add_mem_instr("LOAD", 0, getLast(), 0);
-			supprimer();
-			add_mem_instr("LOAD", 1, getLast(), 0);
-			add_mem_instr("EQ", 0, 0, 1);
-			add_mem_instr("STORE", getLast(), 0, 0);
-			supprimer();
-			}
-#line 1443 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_JMP, (yyvsp[-2]), 0, 0);
+                  }
+#line 1372 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 112 "compiler.y" /* yacc.c:1646  */
+#line 121 "interpreteur.y" /* yacc.c:1646  */
     {
-			add_mem_instr("LOAD", 0, getLast(), 0);
-			supprimer();
-			add_mem_instr("LOAD", 1, getLast(), 0);
-			add_mem_instr("EQ", 0, 0, 1);
-			add_mem_instr("STORE", getLast(), 0, 0);
-			supprimer();
-			}
-#line 1456 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_JMPC,   (yyvsp[-1]), 1, 0);
+                  }
+#line 1381 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 146 "compiler.y" /* yacc.c:1646  */
+#line 126 "interpreteur.y" /* yacc.c:1646  */
     {
-			add_mem_instr("LOAD", 0, getLast(), 0);
-			supprimer();
-			add_mem_instr("LOAD", 1, getLast(), 0);
-			add_mem_instr("INF", 0, 0, 1);
-			add_mem_instr("STORE", getLast(), 0, 0);
-			supprimer();
-			}
-#line 1469 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-1]), 2, 0);
+                    TRAITER_INSTRUCTION(DEST_INF,    2, 1, 1);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1392 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 155 "compiler.y" /* yacc.c:1646  */
+#line 133 "interpreteur.y" /* yacc.c:1646  */
     {
-			add_mem_instr("LOAD",0, getLast(), 0);
-			supprimer();
-			add_mem_instr("LOAD", 1, getLast(), 0);
-			add_mem_instr("SUP", 0, 0, 1);
-			add_mem_instr("STORE", getLast(), 0,0);
-			supprimer();
-			}
-#line 1482 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-1]), 2, 0);
+                    TRAITER_INSTRUCTION(DEST_INFE,    2, 1, 1);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1403 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 164 "compiler.y" /* yacc.c:1646  */
+#line 140 "interpreteur.y" /* yacc.c:1646  */
     {
-			add_mem_instr("LOAD", 0, getLast(), 0);
-			supprimer();
-			add_mem_instr("LOAD", 1, getLast(), 0);
-			add_mem_instr("INFE", 0 , 0 , 1);
-			add_mem_instr("STORE", getLast(), 0, 0);
-			supprimer();
-			}
-#line 1495 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-1]), 2, 0);
+                    TRAITER_INSTRUCTION(DEST_SUP,    2, 1, 1);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1414 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 173 "compiler.y" /* yacc.c:1646  */
+#line 147 "interpreteur.y" /* yacc.c:1646  */
     {
-			add_mem_instr("LOAD", 0, getLast(), 0);
-			supprimer();
-			add_mem_instr("LOAD", 1 ,getLast(), 0);
-			add_mem_instr("SUPE ", 0 , 0, 1 );
-			add_mem_instr("STORE", getLast(), 0, 0);
-			supprimer();
-			}
-#line 1508 "compiler.tab.c" /* yacc.c:1646  */
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-1]), 2, 0);
+                    TRAITER_INSTRUCTION(DEST_SUPE,    2, 1, 1);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1425 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 182 "compiler.y" /* yacc.c:1646  */
-    { 
-				inserer_tmp(" ","int");
-				add_mem_instr("AFC", 0, (yyvsp[0].nb), 0); 
-				add_mem_instr("STORE", getLast(), 0, 0);
-			}
-#line 1518 "compiler.tab.c" /* yacc.c:1646  */
+#line 154 "interpreteur.y" /* yacc.c:1646  */
+    {
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-1]), 2, 0);
+                    TRAITER_INSTRUCTION(DEST_EQU,    2, 1, 1);
+                    TRAITER_INSTRUCTION(DEST_STORE, (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1436 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 188 "compiler.y" /* yacc.c:1646  */
-    { 
-				inserer_tmp(" ","int");
-				add_mem_instr("LOAD", 0, getAdresse((yyvsp[0].str)), 0); 
-				add_mem_instr("STORE", getLast(), 0, 0);
-			}
-#line 1528 "compiler.tab.c" /* yacc.c:1646  */
+#line 161 "interpreteur.y" /* yacc.c:1646  */
+    {
+                    TRAITER_INSTRUCTION(DEST_LOAD,  (yyvsp[-2]), 1, 0);
+                  }
+#line 1444 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 196 "compiler.y" /* yacc.c:1646  */
-    { 
-			add_mem_instr("LOAD", 0, getLast(), 0 );
-			supprimer();
-			add_mem_instr("LOAD", 1 ,getLast(), 0);
-			add_mem_instr("ADD" , 0 , 0 , 1);
-			add_mem_instr("STORE", getLast(), 0 , 0);
-		}
-#line 1540 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 34:
-#line 204 "compiler.y" /* yacc.c:1646  */
-    { 
-			add_mem_instr("LOAD", 0, getLast(), 0);
-			supprimer();
-			add_mem_instr("LOAD", 1, getLast(), 0);
-			add_mem_instr("SUB", 0, 1, 0);  
-			add_mem_instr("STORE", getLast(), 0, 0);
-		}
-#line 1552 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 35:
-#line 212 "compiler.y" /* yacc.c:1646  */
-    { 
-			add_mem_instr("LOAD", 0, getLast(), 0);
-			supprimer();
-			add_mem_instr("LOAD", 1, getLast(), 0);
-			add_mem_instr("DIV", 0, 0, 1);  
-			add_mem_instr("STORE", getLast(), 0, 0);
-		}
-#line 1564 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 36:
-#line 220 "compiler.y" /* yacc.c:1646  */
-    { 
-			add_mem_instr("LOAD", 0, getLast(), 0);
-			supprimer();
-			add_mem_instr("LOAD", 1, getLast(), 0);
-			add_mem_instr("MUL", 0, 1, 0);  
-			add_mem_instr("STORE", getLast(), 0, 0);
-		}
-#line 1576 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 37:
-#line 228 "compiler.y" /* yacc.c:1646  */
-    { 
-			inserer_tmp("","int");
-			add_mem_instr("AFC", 0, (yyvsp[0].nb), 0); 
-			add_mem_instr("STORE", getLast(), 0, 0);
-		}
-#line 1586 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 38:
-#line 234 "compiler.y" /* yacc.c:1646  */
-    { 
-			inserer_tmp("","int");
-			add_mem_instr("LOAD", 0, getAdresse((yyvsp[0].str)), 0); 
-			add_mem_instr("STORE", getLast(), 0, 0);
-		}
-#line 1596 "compiler.tab.c" /* yacc.c:1646  */
+#line 165 "interpreteur.y" /* yacc.c:1646  */
+    {
+                    TRAITER_INSTRUCTION(DEST_STORE,  (yyvsp[-2]), (yyvsp[-1]), 0);
+                  }
+#line 1452 "interpreteur.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1600 "compiler.tab.c" /* yacc.c:1646  */
+#line 1456 "interpreteur.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1824,13 +1680,17 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 242 "compiler.y" /* yacc.c:1906  */
+#line 169 "interpreteur.y" /* yacc.c:1906  */
 
+/*
+void yyerror(char *s) {
+  fprintf(stderr, "%s\n", s);
+}*/
 
-int main(){
-	#if YYDEBUG
-		yydebug = 1;
-	#endif	
-	yyparse();
-	ecrire_fichier();
+int main(int argc, char **argv) {
+  int ret;
+  printf("(");
+  ret = yyparse();
+  printf("others => (others => '0'));\n");
+  return ret;
 }

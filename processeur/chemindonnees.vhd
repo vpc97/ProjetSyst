@@ -32,9 +32,6 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity chemindonnees is
 	Port (
 		ins_di : in STD_LOGIC_VECTOR(31 downto 0);
-		data_a : out STD_LOGIC_VECTOR(15 downto 0);
-		data_we : out STD_LOGIC;
-		data_di : in STD_LOGIC_VECTOR(15 downto 0);
 		CLK : in STD_LOGIC
 	);
 end chemindonnees;
@@ -156,6 +153,35 @@ signal FlagO : STD_LOGIC;
 --Outputs alu
 signal S : STD_LOGIC_VECTOR(15 downto 0);
 
+component mux_str
+	Port ( Op4: in STD_LOGIC_VECTOR(7 downto 0);
+		A_in_s : in STD_LOGIC_VECTOR(15 downto 0);
+		s_out : out STD_LOGIC_VECTOR(15 downto 0);
+		B_in_s : in STD_LOGIC_VECTOR(15 downto 0)
+	);
+end component;
+
+signal s_out : STD_LOGIC_VECTOR(15 downto 0);
+
+component bram16
+  generic (
+    init_file : String := "none";
+    adr_width : Integer := 11);
+  port (
+  -- System
+  sys_clk : in std_logic;
+  sys_rst : in std_logic;
+  -- Master
+  di : out std_logic_vector(15 downto 0);
+  we : in std_logic;
+  a : in std_logic_vector(15 downto 0);
+  do : in std_logic_vector(15 downto 0));
+end component;
+
+signal cpu_data_di : std_logic_vector(15 downto 0);
+signal cpu_data_a : std_logic_vector(15 downto 0);
+signal cpu_data_do : std_logic_vector(15 downto 0);
+signal cpu_data_we : std_logic;
 
 
 type stage is record
@@ -164,6 +190,7 @@ type stage is record
 end record;
 
 signal li, di, ex, mem : stage;
+
 
 begin
 	
@@ -276,12 +303,29 @@ begin
 	umux3 : mux_mem PORT MAP (
 		Op3 => mem.Op,
 		B_in_m3 => mem.b,
-		data_in => data_di, 
+		data_in => cpu_data_di, 
 		data_out => data_out
 	);
 	
-	data_a <= ex.b;
-	data_we <= Res2;
+	umux4 : mux_str PORT MAP (
+		Op4 => ex.Op,
+		A_in_s => ex.a,
+		s_out => s_out,
+		B_in_s => ex.b
+	);
+	
+	memoire : bram16 PORT MAP (
+		sys_clk => clk,
+		sys_rst => rst,
+		di => cpu_data_di,
+		do => cpu_data_do,
+		a => cpu_data_a,
+		we => cpu_data_we
+	);
+	
+	cpu_data_we <= Res2;
+	cpu_data_a <= s_out;
+	cpu_data_do <= ex.b;
 	
 end Behavioral;
 

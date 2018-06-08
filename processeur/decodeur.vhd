@@ -43,6 +43,7 @@ architecture Behavioral of decodeur is
 signal aux : STD_LOGIC_VECTOR(15 downto 0);
 signal aux2 : STD_LOGIC_VECTOR(15 downto 0);
 signal aux3 : STD_LOGIC_VECTOR(15 downto 0);
+signal aux4 : STD_LOGIC_VECTOR(15 downto 0);
 
 begin
 
@@ -55,7 +56,10 @@ begin
 
 	aux2(7 downto 0) <= ins_di(15 downto 8);
 	aux2(15 downto 8) <= "00000000";
-	B <= 	ins_di(15 downto 0) when (ins_di(31 downto 24) = x"06" or ins_di(31 downto 24) = x"07") else
+	aux4(7 downto 0) <= ins_di(7 downto 0);
+	aux4(15 downto 8) <= "00000000";
+	B <= 	ins_di(15 downto 0) when (ins_di(31 downto 24) = x"06" or ins_di(31 downto 24) = x"07") 
+			else aux4 when ins_di(31 downto 24) = x"08" else
 			aux2;
 
 	aux3(7 downto 0) <= 	ins_di(7 downto 0);
