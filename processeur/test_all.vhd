@@ -48,7 +48,7 @@ ARCHITECTURE behavior OF test_all IS
     
 
    --Inputs
-   signal ins_di : std_logic_vector(31 downto 0) := x"08010203";
+   signal ins_di : std_logic_vector(31 downto 0) := x"01010203";
    signal CLK : std_logic := '0';
 
    -- Clock period definitions

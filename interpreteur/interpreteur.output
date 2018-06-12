@@ -1,122 +1,71 @@
+État 18 conflits: 1 réduction/réduction
+
+
 Grammaire
 
-    0 $accept: instructions $end
+    0 $accept: Start $end
 
-    1 instructions: instruction instructions
-    2             | %empty
+    1 Start: instructions
 
-    3 instruction: instruction_add
-    4            | instruction_mul
-    5            | instruction_sou
-    6            | instruction_div
-    7            | instruction_cop
-    8            | instruction_afc
-    9            | instruction_jmp
-   10            | instruction_jmpc
-   11            | instruction_inf
-   12            | instruction_sup
-   13            | instruction_equ
-   14            | instruction_infe
-   15            | instruction_supe
-   16            | instruction_load
-   17            | instruction_store
+    2 instructions: instruction instructions
+    3             | instruction
+    4             | %empty
 
-   18 instruction_add: tADD tENT tENT tENT
-
-   19 instruction_mul: tMUL tENT tENT tENT
-
-   20 instruction_sou: tSOU tENT tENT tENT
-
-   21 instruction_div: tDIV tENT tENT tENT
-
-   22 instruction_cop: tCOP tENT tENT tENT
-
-   23 instruction_afc: tAFC tENT tENT tENT
-
-   24 instruction_jmp: tJMP tENT tENT tENT
-
-   25 instruction_jmpc: tJMPC tENT tENT tENT
-
-   26 instruction_inf: tINF tENT tENT tENT
-
-   27 instruction_infe: tINFE tENT tENT tENT
-
-   28 instruction_sup: tSUP tENT tENT tENT
-
-   29 instruction_supe: tSUPE tENT tENT tENT
-
-   30 instruction_equ: tEQU tENT tENT tENT
-
-   31 instruction_load: tLOAD tENT tENT tENT
-
-   32 instruction_store: tSTORE tENT tENT tENT
+    5 instruction: tADD tINT tINT tINT
+    6            | tMUL tINT tINT tINT
+    7            | tSOU tINT tINT tINT
+    8            | tDIV tINT tINT tINT
+    9            | tCOP tINT tINT tINT
+   10            | tAFC tINT tINT tINT
+   11            | tLOAD tINT tINT tINT
+   12            | tSTORE tINT tINT tINT
+   13            | tEQU tINT tINT tINT
+   14            | tINF tINT tINT tINT
+   15            | tINFE tINT tINT tINT
+   16            | tSUP tINT tINT tINT
+   17            | tSUPE tINT tINT tINT
+   18            | tJMP tINT tINT tINT
+   19            | tJMPC tINT tINT tINT
 
 
 Terminaux, suivis des règles où ils apparaissent
 
 $end (0) 0
 error (256)
-tADD (258) 18
-tMUL (259) 19
-tSOU (260) 20
-tDIV (261) 21
-tCOP (262) 22
-tAFC (263) 23
-tJMP (264) 24
-tJMPC (265) 25
-tINF (266) 26
-tSUP (267) 28
-tEQU (268) 30
-tLOAD (269) 31
-tSTORE (270) 32
-tINFE (271) 27
-tSUPE (272) 29
-tENT (273) 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+tINT (258) 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
+tADD (259) 5
+tMUL (260) 6
+tSOU (261) 7
+tDIV (262) 8
+tCOP (263) 9
+tAFC (264) 10
+tLOAD (265) 11
+tSTORE (266) 12
+tEQU (267) 13
+tINF (268) 14
+tINFE (269) 15
+tSUP (270) 16
+tSUPE (271) 17
+tJMP (272) 18
+tJMPC (273) 19
 
 
 Non-terminaux, suivis des règles où ils apparaissent
 
 $accept (19)
     à gauche: 0
-instructions (20)
-    à gauche: 1 2, à droite: 0 1
-instruction (21)
-    à gauche: 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17, à droite: 1
-instruction_add (22)
-    à gauche: 18, à droite: 3
-instruction_mul (23)
-    à gauche: 19, à droite: 4
-instruction_sou (24)
-    à gauche: 20, à droite: 5
-instruction_div (25)
-    à gauche: 21, à droite: 6
-instruction_cop (26)
-    à gauche: 22, à droite: 7
-instruction_afc (27)
-    à gauche: 23, à droite: 8
-instruction_jmp (28)
-    à gauche: 24, à droite: 9
-instruction_jmpc (29)
-    à gauche: 25, à droite: 10
-instruction_inf (30)
-    à gauche: 26, à droite: 11
-instruction_infe (31)
-    à gauche: 27, à droite: 14
-instruction_sup (32)
-    à gauche: 28, à droite: 12
-instruction_supe (33)
-    à gauche: 29, à droite: 15
-instruction_equ (34)
-    à gauche: 30, à droite: 13
-instruction_load (35)
-    à gauche: 31, à droite: 16
-instruction_store (36)
-    à gauche: 32, à droite: 17
+Start (20)
+    à gauche: 1, à droite: 0
+instructions (21)
+    à gauche: 2 3 4, à droite: 1 2
+instruction (22)
+    à gauche: 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19, à droite:
+    2 3
 
 
 État 0
 
-    0 $accept: . instructions $end
+    0 $accept: . Start $end
 
     tADD    décalage et aller à l'état 1
     tMUL    décalage et aller à l'état 2
@@ -124,152 +73,146 @@ instruction_store (36)
     tDIV    décalage et aller à l'état 4
     tCOP    décalage et aller à l'état 5
     tAFC    décalage et aller à l'état 6
-    tJMP    décalage et aller à l'état 7
-    tJMPC   décalage et aller à l'état 8
-    tINF    décalage et aller à l'état 9
-    tSUP    décalage et aller à l'état 10
-    tEQU    décalage et aller à l'état 11
-    tLOAD   décalage et aller à l'état 12
-    tSTORE  décalage et aller à l'état 13
-    tINFE   décalage et aller à l'état 14
-    tSUPE   décalage et aller à l'état 15
+    tLOAD   décalage et aller à l'état 7
+    tSTORE  décalage et aller à l'état 8
+    tEQU    décalage et aller à l'état 9
+    tINF    décalage et aller à l'état 10
+    tINFE   décalage et aller à l'état 11
+    tSUP    décalage et aller à l'état 12
+    tSUPE   décalage et aller à l'état 13
+    tJMP    décalage et aller à l'état 14
+    tJMPC   décalage et aller à l'état 15
 
-    $défaut  réduction par utilisation de la règle 2 (instructions)
+    $défaut  réduction par utilisation de la règle 4 (instructions)
 
-    instructions       aller à l'état 16
-    instruction        aller à l'état 17
-    instruction_add    aller à l'état 18
-    instruction_mul    aller à l'état 19
-    instruction_sou    aller à l'état 20
-    instruction_div    aller à l'état 21
-    instruction_cop    aller à l'état 22
-    instruction_afc    aller à l'état 23
-    instruction_jmp    aller à l'état 24
-    instruction_jmpc   aller à l'état 25
-    instruction_inf    aller à l'état 26
-    instruction_infe   aller à l'état 27
-    instruction_sup    aller à l'état 28
-    instruction_supe   aller à l'état 29
-    instruction_equ    aller à l'état 30
-    instruction_load   aller à l'état 31
-    instruction_store  aller à l'état 32
+    Start         aller à l'état 16
+    instructions  aller à l'état 17
+    instruction   aller à l'état 18
 
 
 État 1
 
-   18 instruction_add: tADD . tENT tENT tENT
+    5 instruction: tADD . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 33
+    tINT  décalage et aller à l'état 19
 
 
 État 2
 
-   19 instruction_mul: tMUL . tENT tENT tENT
+    6 instruction: tMUL . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 34
+    tINT  décalage et aller à l'état 20
 
 
 État 3
 
-   20 instruction_sou: tSOU . tENT tENT tENT
+    7 instruction: tSOU . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 35
+    tINT  décalage et aller à l'état 21
 
 
 État 4
 
-   21 instruction_div: tDIV . tENT tENT tENT
+    8 instruction: tDIV . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 36
+    tINT  décalage et aller à l'état 22
 
 
 État 5
 
-   22 instruction_cop: tCOP . tENT tENT tENT
+    9 instruction: tCOP . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 37
+    tINT  décalage et aller à l'état 23
 
 
 État 6
 
-   23 instruction_afc: tAFC . tENT tENT tENT
+   10 instruction: tAFC . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 38
+    tINT  décalage et aller à l'état 24
 
 
 État 7
 
-   24 instruction_jmp: tJMP . tENT tENT tENT
+   11 instruction: tLOAD . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 39
+    tINT  décalage et aller à l'état 25
 
 
 État 8
 
-   25 instruction_jmpc: tJMPC . tENT tENT tENT
+   12 instruction: tSTORE . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 40
+    tINT  décalage et aller à l'état 26
 
 
 État 9
 
-   26 instruction_inf: tINF . tENT tENT tENT
+   13 instruction: tEQU . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 41
+    tINT  décalage et aller à l'état 27
 
 
 État 10
 
-   28 instruction_sup: tSUP . tENT tENT tENT
+   14 instruction: tINF . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 42
+    tINT  décalage et aller à l'état 28
 
 
 État 11
 
-   30 instruction_equ: tEQU . tENT tENT tENT
+   15 instruction: tINFE . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 43
+    tINT  décalage et aller à l'état 29
 
 
 État 12
 
-   31 instruction_load: tLOAD . tENT tENT tENT
+   16 instruction: tSUP . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 44
+    tINT  décalage et aller à l'état 30
 
 
 État 13
 
-   32 instruction_store: tSTORE . tENT tENT tENT
+   17 instruction: tSUPE . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 45
+    tINT  décalage et aller à l'état 31
 
 
 État 14
 
-   27 instruction_infe: tINFE . tENT tENT tENT
+   18 instruction: tJMP . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 46
+    tINT  décalage et aller à l'état 32
 
 
 État 15
 
-   29 instruction_supe: tSUPE . tENT tENT tENT
+   19 instruction: tJMPC . tINT tINT tINT
 
-    tENT  décalage et aller à l'état 47
+    tINT  décalage et aller à l'état 33
 
 
 État 16
 
-    0 $accept: instructions . $end
+    0 $accept: Start . $end
 
-    $end  décalage et aller à l'état 48
+    $end  décalage et aller à l'état 34
 
 
 État 17
 
-    1 instructions: instruction . instructions
+    1 Start: instructions .
+
+    $défaut  réduction par utilisation de la règle 1 (Start)
+
+
+État 18
+
+    2 instructions: instruction . instructions
+    3             | instruction .
 
     tADD    décalage et aller à l'état 1
     tMUL    décalage et aller à l'état 2
@@ -277,466 +220,348 @@ instruction_store (36)
     tDIV    décalage et aller à l'état 4
     tCOP    décalage et aller à l'état 5
     tAFC    décalage et aller à l'état 6
-    tJMP    décalage et aller à l'état 7
-    tJMPC   décalage et aller à l'état 8
-    tINF    décalage et aller à l'état 9
-    tSUP    décalage et aller à l'état 10
-    tEQU    décalage et aller à l'état 11
-    tLOAD   décalage et aller à l'état 12
-    tSTORE  décalage et aller à l'état 13
-    tINFE   décalage et aller à l'état 14
-    tSUPE   décalage et aller à l'état 15
+    tLOAD   décalage et aller à l'état 7
+    tSTORE  décalage et aller à l'état 8
+    tEQU    décalage et aller à l'état 9
+    tINF    décalage et aller à l'état 10
+    tINFE   décalage et aller à l'état 11
+    tSUP    décalage et aller à l'état 12
+    tSUPE   décalage et aller à l'état 13
+    tJMP    décalage et aller à l'état 14
+    tJMPC   décalage et aller à l'état 15
 
-    $défaut  réduction par utilisation de la règle 2 (instructions)
+    $end      réduction par utilisation de la règle 3 (instructions)
+    $end      [réduction par utilisation de la règle 4 (instructions)]
+    $défaut  réduction par utilisation de la règle 3 (instructions)
 
-    instructions       aller à l'état 49
-    instruction        aller à l'état 17
-    instruction_add    aller à l'état 18
-    instruction_mul    aller à l'état 19
-    instruction_sou    aller à l'état 20
-    instruction_div    aller à l'état 21
-    instruction_cop    aller à l'état 22
-    instruction_afc    aller à l'état 23
-    instruction_jmp    aller à l'état 24
-    instruction_jmpc   aller à l'état 25
-    instruction_inf    aller à l'état 26
-    instruction_infe   aller à l'état 27
-    instruction_sup    aller à l'état 28
-    instruction_supe   aller à l'état 29
-    instruction_equ    aller à l'état 30
-    instruction_load   aller à l'état 31
-    instruction_store  aller à l'état 32
-
-
-État 18
-
-    3 instruction: instruction_add .
-
-    $défaut  réduction par utilisation de la règle 3 (instruction)
+    instructions  aller à l'état 35
+    instruction   aller à l'état 18
 
 
 État 19
 
-    4 instruction: instruction_mul .
+    5 instruction: tADD tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 4 (instruction)
+    tINT  décalage et aller à l'état 36
 
 
 État 20
 
-    5 instruction: instruction_sou .
+    6 instruction: tMUL tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 5 (instruction)
+    tINT  décalage et aller à l'état 37
 
 
 État 21
 
-    6 instruction: instruction_div .
+    7 instruction: tSOU tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 6 (instruction)
+    tINT  décalage et aller à l'état 38
 
 
 État 22
 
-    7 instruction: instruction_cop .
+    8 instruction: tDIV tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 7 (instruction)
+    tINT  décalage et aller à l'état 39
 
 
 État 23
 
-    8 instruction: instruction_afc .
+    9 instruction: tCOP tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 8 (instruction)
+    tINT  décalage et aller à l'état 40
 
 
 État 24
 
-    9 instruction: instruction_jmp .
+   10 instruction: tAFC tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 9 (instruction)
+    tINT  décalage et aller à l'état 41
 
 
 État 25
 
-   10 instruction: instruction_jmpc .
+   11 instruction: tLOAD tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 10 (instruction)
+    tINT  décalage et aller à l'état 42
 
 
 État 26
 
-   11 instruction: instruction_inf .
+   12 instruction: tSTORE tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 11 (instruction)
+    tINT  décalage et aller à l'état 43
 
 
 État 27
 
-   14 instruction: instruction_infe .
+   13 instruction: tEQU tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 14 (instruction)
+    tINT  décalage et aller à l'état 44
 
 
 État 28
 
-   12 instruction: instruction_sup .
+   14 instruction: tINF tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 12 (instruction)
+    tINT  décalage et aller à l'état 45
 
 
 État 29
 
-   15 instruction: instruction_supe .
+   15 instruction: tINFE tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 15 (instruction)
+    tINT  décalage et aller à l'état 46
 
 
 État 30
 
-   13 instruction: instruction_equ .
+   16 instruction: tSUP tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 13 (instruction)
+    tINT  décalage et aller à l'état 47
 
 
 État 31
 
-   16 instruction: instruction_load .
+   17 instruction: tSUPE tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 16 (instruction)
+    tINT  décalage et aller à l'état 48
 
 
 État 32
 
-   17 instruction: instruction_store .
+   18 instruction: tJMP tINT . tINT tINT
 
-    $défaut  réduction par utilisation de la règle 17 (instruction)
+    tINT  décalage et aller à l'état 49
 
 
 État 33
 
-   18 instruction_add: tADD tENT . tENT tENT
+   19 instruction: tJMPC tINT . tINT tINT
 
-    tENT  décalage et aller à l'état 50
+    tINT  décalage et aller à l'état 50
 
 
 État 34
 
-   19 instruction_mul: tMUL tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 51
-
-
-État 35
-
-   20 instruction_sou: tSOU tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 52
-
-
-État 36
-
-   21 instruction_div: tDIV tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 53
-
-
-État 37
-
-   22 instruction_cop: tCOP tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 54
-
-
-État 38
-
-   23 instruction_afc: tAFC tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 55
-
-
-État 39
-
-   24 instruction_jmp: tJMP tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 56
-
-
-État 40
-
-   25 instruction_jmpc: tJMPC tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 57
-
-
-État 41
-
-   26 instruction_inf: tINF tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 58
-
-
-État 42
-
-   28 instruction_sup: tSUP tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 59
-
-
-État 43
-
-   30 instruction_equ: tEQU tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 60
-
-
-État 44
-
-   31 instruction_load: tLOAD tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 61
-
-
-État 45
-
-   32 instruction_store: tSTORE tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 62
-
-
-État 46
-
-   27 instruction_infe: tINFE tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 63
-
-
-État 47
-
-   29 instruction_supe: tSUPE tENT . tENT tENT
-
-    tENT  décalage et aller à l'état 64
-
-
-État 48
-
-    0 $accept: instructions $end .
+    0 $accept: Start $end .
 
     $défaut  accepter
 
 
+État 35
+
+    2 instructions: instruction instructions .
+
+    $défaut  réduction par utilisation de la règle 2 (instructions)
+
+
+État 36
+
+    5 instruction: tADD tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 51
+
+
+État 37
+
+    6 instruction: tMUL tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 52
+
+
+État 38
+
+    7 instruction: tSOU tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 53
+
+
+État 39
+
+    8 instruction: tDIV tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 54
+
+
+État 40
+
+    9 instruction: tCOP tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 55
+
+
+État 41
+
+   10 instruction: tAFC tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 56
+
+
+État 42
+
+   11 instruction: tLOAD tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 57
+
+
+État 43
+
+   12 instruction: tSTORE tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 58
+
+
+État 44
+
+   13 instruction: tEQU tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 59
+
+
+État 45
+
+   14 instruction: tINF tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 60
+
+
+État 46
+
+   15 instruction: tINFE tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 61
+
+
+État 47
+
+   16 instruction: tSUP tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 62
+
+
+État 48
+
+   17 instruction: tSUPE tINT tINT . tINT
+
+    tINT  décalage et aller à l'état 63
+
+
 État 49
 
-    1 instructions: instruction instructions .
+   18 instruction: tJMP tINT tINT . tINT
 
-    $défaut  réduction par utilisation de la règle 1 (instructions)
+    tINT  décalage et aller à l'état 64
 
 
 État 50
 
-   18 instruction_add: tADD tENT tENT . tENT
+   19 instruction: tJMPC tINT tINT . tINT
 
-    tENT  décalage et aller à l'état 65
+    tINT  décalage et aller à l'état 65
 
 
 État 51
 
-   19 instruction_mul: tMUL tENT tENT . tENT
+    5 instruction: tADD tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 66
+    $défaut  réduction par utilisation de la règle 5 (instruction)
 
 
 État 52
 
-   20 instruction_sou: tSOU tENT tENT . tENT
+    6 instruction: tMUL tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 67
+    $défaut  réduction par utilisation de la règle 6 (instruction)
 
 
 État 53
 
-   21 instruction_div: tDIV tENT tENT . tENT
+    7 instruction: tSOU tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 68
+    $défaut  réduction par utilisation de la règle 7 (instruction)
 
 
 État 54
 
-   22 instruction_cop: tCOP tENT tENT . tENT
+    8 instruction: tDIV tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 69
+    $défaut  réduction par utilisation de la règle 8 (instruction)
 
 
 État 55
 
-   23 instruction_afc: tAFC tENT tENT . tENT
+    9 instruction: tCOP tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 70
+    $défaut  réduction par utilisation de la règle 9 (instruction)
 
 
 État 56
 
-   24 instruction_jmp: tJMP tENT tENT . tENT
+   10 instruction: tAFC tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 71
+    $défaut  réduction par utilisation de la règle 10 (instruction)
 
 
 État 57
 
-   25 instruction_jmpc: tJMPC tENT tENT . tENT
+   11 instruction: tLOAD tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 72
+    $défaut  réduction par utilisation de la règle 11 (instruction)
 
 
 État 58
 
-   26 instruction_inf: tINF tENT tENT . tENT
+   12 instruction: tSTORE tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 73
+    $défaut  réduction par utilisation de la règle 12 (instruction)
 
 
 État 59
 
-   28 instruction_sup: tSUP tENT tENT . tENT
+   13 instruction: tEQU tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 74
+    $défaut  réduction par utilisation de la règle 13 (instruction)
 
 
 État 60
 
-   30 instruction_equ: tEQU tENT tENT . tENT
+   14 instruction: tINF tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 75
+    $défaut  réduction par utilisation de la règle 14 (instruction)
 
 
 État 61
 
-   31 instruction_load: tLOAD tENT tENT . tENT
+   15 instruction: tINFE tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 76
+    $défaut  réduction par utilisation de la règle 15 (instruction)
 
 
 État 62
 
-   32 instruction_store: tSTORE tENT tENT . tENT
+   16 instruction: tSUP tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 77
+    $défaut  réduction par utilisation de la règle 16 (instruction)
 
 
 État 63
 
-   27 instruction_infe: tINFE tENT tENT . tENT
+   17 instruction: tSUPE tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 78
+    $défaut  réduction par utilisation de la règle 17 (instruction)
 
 
 État 64
 
-   29 instruction_supe: tSUPE tENT tENT . tENT
+   18 instruction: tJMP tINT tINT tINT .
 
-    tENT  décalage et aller à l'état 79
+    $défaut  réduction par utilisation de la règle 18 (instruction)
 
 
 État 65
 
-   18 instruction_add: tADD tENT tENT tENT .
+   19 instruction: tJMPC tINT tINT tINT .
 
-    $défaut  réduction par utilisation de la règle 18 (instruction_add)
-
-
-État 66
-
-   19 instruction_mul: tMUL tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 19 (instruction_mul)
-
-
-État 67
-
-   20 instruction_sou: tSOU tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 20 (instruction_sou)
-
-
-État 68
-
-   21 instruction_div: tDIV tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 21 (instruction_div)
-
-
-État 69
-
-   22 instruction_cop: tCOP tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 22 (instruction_cop)
-
-
-État 70
-
-   23 instruction_afc: tAFC tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 23 (instruction_afc)
-
-
-État 71
-
-   24 instruction_jmp: tJMP tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 24 (instruction_jmp)
-
-
-État 72
-
-   25 instruction_jmpc: tJMPC tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 25 (instruction_jmpc)
-
-
-État 73
-
-   26 instruction_inf: tINF tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 26 (instruction_inf)
-
-
-État 74
-
-   28 instruction_sup: tSUP tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 28 (instruction_sup)
-
-
-État 75
-
-   30 instruction_equ: tEQU tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 30 (instruction_equ)
-
-
-État 76
-
-   31 instruction_load: tLOAD tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 31 (instruction_load)
-
-
-État 77
-
-   32 instruction_store: tSTORE tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 32 (instruction_store)
-
-
-État 78
-
-   27 instruction_infe: tINFE tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 27 (instruction_infe)
-
-
-État 79
-
-   29 instruction_supe: tSUPE tENT tENT tENT .
-
-    $défaut  réduction par utilisation de la règle 29 (instruction_supe)
+    $défaut  réduction par utilisation de la règle 19 (instruction)

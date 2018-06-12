@@ -45,28 +45,37 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    tADD = 258,
-    tMUL = 259,
-    tSOU = 260,
-    tDIV = 261,
-    tCOP = 262,
-    tAFC = 263,
-    tJMP = 264,
-    tJMPC = 265,
-    tINF = 266,
-    tSUP = 267,
-    tEQU = 268,
-    tLOAD = 269,
-    tSTORE = 270,
-    tINFE = 271,
-    tSUPE = 272,
-    tENT = 273
+    tINT = 258,
+    tADD = 259,
+    tMUL = 260,
+    tSOU = 261,
+    tDIV = 262,
+    tCOP = 263,
+    tAFC = 264,
+    tLOAD = 265,
+    tSTORE = 266,
+    tEQU = 267,
+    tINF = 268,
+    tINFE = 269,
+    tSUP = 270,
+    tSUPE = 271,
+    tJMP = 272,
+    tJMPC = 273
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 17 "interpreteur.y" /* yacc.c:1909  */
+ char* str; int nb;
+
+#line 76 "interpreteur.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

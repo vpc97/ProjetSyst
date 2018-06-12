@@ -61,7 +61,7 @@ void ecrire_fichier(){
 
 	for(i=0; i<(sizeof(mem)/sizeof(Instr)); i++){
 		if (mem[i].id != NULL){
-			if (strcmp(mem[i].id, "ADD") == 0) {
+			/*if (strcmp(mem[i].id, "ADD") == 0) {
 				num_instr = '1';
 			} else if (strcmp(mem[i].id, "MUL") == 0) {
 				num_instr = '2';
@@ -95,7 +95,7 @@ void ecrire_fichier(){
 
 			fprintf(f, "%c %d %d %d\n",  num_instr, mem[i].param[0], mem[i].param[1], mem[i].param[2]);
 
-			//fprintf(f, "%s %d %d %d\n",  mem[i].id, mem[i].param[0], mem[i].param[1], mem[i].param[2]);
+			*/fprintf(f, "%s %d %d %d\n",  mem[i].id, mem[i].param[0], mem[i].param[1], mem[i].param[2]);
 		}
 	}
 

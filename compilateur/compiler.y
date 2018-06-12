@@ -18,7 +18,7 @@
 %left tMULT tDIV
 
 %type <str> tVAR tID dec boolean
-%type <nb> tINT tIF tELSE tWHILE if_action
+%type <nb> tINT tIF tELSE tWHILE if_action else_action
 
 %nonassoc tIFX
 %nonassoc tELSE
@@ -69,9 +69,11 @@ instruction : tID tEGAL Exp tPOINTVIRGULE
 			change(pos, calcul_longueur() - 1);
 			}
 			
-			| tIF tPO boolean tPF if_action tAO Body tAF tELSE tAO Body tAF
+			| tIF tPO boolean tPF if_action tAO Body tAF tELSE else_action tAO Body tAF
 			{
-			printf(" else \n");
+			int pos = $9 ;
+			change(pos, calcul_longueur() - 1);
+			
 			}
 			| tWHILE tPO boolean tPF tAO Body tAF 
 			{
@@ -90,6 +92,11 @@ if_action : {
 			add_mem_instr("LOAD", 1 , getLast(),0);
 			add_mem_instr("JMPC", -1, 1, 0);
 			$$ = calcul_longueur() - 1;		
+			};
+
+else_action: {
+			add_mem_instr("JMP", -1, 1, 0);
+			$$ = calcul_longueur() - 1;	
 			};
 
 boolean :	/*boolean tEGAL boolean 
